@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>施設・場内管理ポータルサイト</title>
+  <!-- SortableJS（ドラッグ＆ドロップ用ライブラリ） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
   <style>
     :root {
       --bg-green: #0a5c36;
@@ -183,7 +185,7 @@
       font-weight: bold;
       padding: 18px 16px;
       text-align: center;
-      cursor: pointer;
+      cursor: grab; /* マウスを掴むカーソルに変更 */
       box-shadow: 0 5px 8px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.9);
       text-shadow: 0 1px 0 rgba(255,255,255,0.8);
       display: flex;
@@ -196,8 +198,8 @@
       position: relative;
     }
 
-    .atm-btn:hover { filter: brightness(1.03); }
     .atm-btn:active {
+      cursor: grabbing;
       transform: translateY(3px);
       box-shadow: 0 2px 3px rgba(0,0,0,0.3);
       background: linear-gradient(180deg, var(--btn-grad-bottom) 0%, var(--btn-grad-top) 100%);
@@ -206,6 +208,13 @@
     .atm-btn-github {
       border-color: #24292e;
       background: linear-gradient(180deg, #f6f8fa 0%, #d1d5da 100%);
+    }
+
+    /* ドラッグ移動中のボタン表示スタイル */
+    .sortable-ghost {
+      opacity: 0.4;
+      border: 2px dashed #0a5c36;
+      background: #e2e8f0;
     }
 
     .lock-badge {
@@ -706,12 +715,13 @@
     const grid = document.createElement('div');
     grid.className = 'button-grid';
 
-    configData.forEach((btn) => {
+    configData.forEach((btn, index) => {
       const btnEl = document.createElement('div');
       const linkInfo = btn.type === 'single' ? detectLinkType(btn.url) : { icon: '📁', label: 'Folder' };
       const hasPin = btn.pin && btn.pin.trim() !== "";
       
       btnEl.className = 'atm-btn' + (linkInfo.label === 'GitHub' ? ' atm-btn-github' : '');
+      btnEl.dataset.index = index;
       btnEl.innerHTML = `
         <span style="font-size:28px;">${linkInfo.icon}</span>
         <span>${btn.title || '無題のボタン'}</span>
@@ -725,6 +735,18 @@
     });
 
     container.appendChild(grid);
+
+    // ★ メイン画面のボタンにドラッグ＆ドロップ機能を適用
+    new Sortable(grid, {
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+      onEnd: function (evt) {
+        // 並び替えた位置に従って配列データを更新・保存
+        const movedItem = configData.splice(evt.oldIndex, 1)[0];
+        configData.splice(evt.newIndex, 0, movedItem);
+        saveSettingsToStorage();
+      }
+    });
   }
 
   // 5. 個別ボタン押下処理
@@ -806,6 +828,7 @@
     backBtn.style.background = 'linear-gradient(180deg, #4a5568 0%, #2d3748 100%)';
     backBtn.style.color = '#ffffff';
     backBtn.style.borderColor = '#1a202c';
+    backBtn.style.cursor = 'pointer';
     backBtn.innerText = '⬅️ 前の画面に戻る';
     backBtn.onclick = () => {
       renderScreen();
@@ -916,6 +939,7 @@
     configData.forEach((btn, index) => {
       const item = document.createElement('div');
       item.className = 'config-card';
+      item.dataset.index = index;
       
       let html = `
         <div style="display:flex; justify-content:space-between; align-items:center;">
@@ -967,6 +991,17 @@
       item.innerHTML = html;
       list.appendChild(item);
     });
+
+    // ★ 設定画面のカードリストにもドラッグ＆ドロップを適用
+    new Sortable(list, {
+      animation: 150,
+      ghostClass: 'sortable-ghost',
+      onEnd: function (evt) {
+        const movedItem = configData.splice(evt.oldIndex, 1)[0];
+        configData.splice(evt.newIndex, 0, movedItem);
+        renderSettingsList();
+      }
+    });
   }
 
   function changeType(index, type) {
@@ -1014,13 +1049,18 @@
     });
   }
 
-  // 設定の保存
-  function saveSettings() {
+  // 自動保存用関数
+  function saveSettingsToStorage() {
     const fullData = {
       masterPin: masterPin ? masterPin.trim() : "",
       buttons: configData
     };
     localStorage.setItem('atm_portal_config', JSON.stringify(fullData));
+  }
+
+  // 設定の保存
+  function saveSettings() {
+    saveSettingsToStorage();
     closeSettings();
     checkSecurityAndRender();
   }
