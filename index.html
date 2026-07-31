@@ -736,7 +736,7 @@
 
     container.appendChild(grid);
 
-    // ★ メイン画面のボタンにドラッグ＆ドロップ機能を適用
+    // ★ メイン画面のボタンのみドラッグ＆ドロップ適用
     new Sortable(grid, {
       animation: 150,
       ghostClass: 'sortable-ghost',
@@ -991,17 +991,7 @@
       item.innerHTML = html;
       list.appendChild(item);
     });
-
-    // ★ 設定画面のカードリストにもドラッグ＆ドロップを適用
-    new Sortable(list, {
-      animation: 150,
-      ghostClass: 'sortable-ghost',
-      onEnd: function (evt) {
-        const movedItem = configData.splice(evt.oldIndex, 1)[0];
-        configData.splice(evt.newIndex, 0, movedItem);
-        renderSettingsList();
-      }
-    });
+    // ※ 設定画面内の Sortable 適用は除外しています（ドラッグ無効）
   }
 
   function changeType(index, type) {
