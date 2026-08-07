@@ -1,0 +1,169 @@
+    :root {
+      --bg-green: #0a5c36;
+      --header-green: #10804c;
+      --screen-bg: #c8d3dc;
+      --btn-grad-top: #f4f8ff;
+      --btn-grad-bottom: #a2b8d4;
+      --btn-border: #4a6388;
+      --btn-text: #0d1b2a;
+      --accent-gold: #e2b007;
+      --github-dark: #24292e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Hiragino Kaku Gothic ProN", "メイリオ", sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #12161a;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    /* ATM 筐体フレーム - 画面いっぱいに広げる大画面仕様 */
+    .atm-frame {
+      width: 100%;
+      max-width: 1400px;
+      height: calc(100vh - 32px);
+      min-height: 600px;
+      background: var(--bg-green);
+      border: 16px solid #232b38;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.8), inset 0 1px 2px rgba(255,255,255,0.3);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* 画面枠 */
+    .screen {
+      background: var(--screen-bg);
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid #1a202c;
+    }
+
+    /* ヘッダー */
+    .screen-header {
+      background: var(--header-green);
+      color: white;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #064024;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-tag {
+      background: #064024;
+      padding: 8px 20px;
+      border-radius: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* メッセージバナー */
+    .message-box {
+      background: #ffffff;
+      border: 2px solid #4a5568;
+      margin: 16px 24px 8px 24px;
+      padding: 16px 24px;
+      font-weight: bold;
+      font-size: 22px;
+      color: #1a202c;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* サブバナー */
+    .sub-banner {
+      background: #111827;
+      color: #fff;
+      font-size: 15px;
+      padding: 8px 24px;
+      margin: 0 24px 16px 24px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      border-radius: 4px;
+      border-bottom: 2px solid #00ffcc;
+    }
+
+    .sub-banner span.highlight {
+      color: #00ffcc;
+    }
+
+    /* コンテンツエリア */
+    .content-area {
+      flex-grow: 1;
+      padding: 0 24px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    /* 空の状態 */
+    .empty-state {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.4);
+      border: 2px dashed #718096;
+      border-radius: 12px;
+      color: #2d3748;
+      text-align: center;
+      padding: 30px;
+    }
+
+    /* ボタン配置グリッド */
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px 24px;
+      width: 100%;
+      align-content: start;
+    }
+
+    /* フォルダビュー（サブ一覧） */
+    .folder-view {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+
+

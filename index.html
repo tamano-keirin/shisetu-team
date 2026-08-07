@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>西崎 靖弘 スプシDB</title>
+
+  <link rel="stylesheet" href="css/style.css?v=3">
+  <link rel="stylesheet" href="css/buttons.css?v=3">
+  <link rel="stylesheet" href="css/pin.css?v=3">
+  <link rel="stylesheet" href="css/modal.css?v=3">
+  <link rel="stylesheet" href="css/settings.css?v=3">
+  <link rel="stylesheet" href="css/tasks.css?v=1">
+
+  <!-- SortableJS（ドラッグ＆ドロップ用ライブラリ） -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+</head>
+
+<body>
+
+<div class="atm-frame">
+  <div class="screen">
+    <!-- ヘッダー -->
+    <div class="screen-header">
+  <div class="header-left">
+    <span class="header-tag">西崎 靖弘 スプシDB</span>
+  </div>
+
+  <div class="header-right">
+    <button class="task-btn" onclick="openTaskManager()">
+      📋 タスク管理
+    </button>
+
+    <button class="settings-btn" onclick="openSettings()">
+      ⚙️ 設定
+    </button>
+  </div>
+</div>
+
+    <!-- メッセージバナー -->
+    <div class="message-box" id="msg-box">
+      行きたい場所を押してください。
+    </div>
+
+    <!-- インジケーターバー -->
+    <div class="sub-banner">
+      <span>ATM PORTAL ONLINE</span>
+      <span class="highlight" id="status-tag">READY</span>
+    </div>
+
+    <!-- メインコンテンツ表示エリア -->
+    <div class="content-area">
+      <div id="app-content" style="width: 100%; height: 100%;"></div>
+    </div>
+  </div>
+
+  <!-- 設定モーダル -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>⚙️ ポータル設定</h3>
+        <button class="btn-sm" onclick="closeSettings()">✕ 閉じる</button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- ポータル全体の暗証番号設定 -->
+        <div class="master-pin-section">
+          <label>🔒 ポータル全体の暗証番号（6桁の数字）</label>
+          <p style="font-size:13px; color:#166534; margin-bottom:8px;">ポータル進入時に全員に求める暗証番号です。（保護不要の場合は空欄）</p>
+          <input type="text" id="master-pin-input" maxlength="6" placeholder="例: 123456（なしの場合は空欄）" onchange="masterPin = this.value">
+        </div>
+
+        <div id="settings-list"></div>
+
+        <button class="btn-sm" onclick="addNewButton()" style="width:100%; padding:14px; margin-top:12px; background:#e6fffa; border:1px solid #319795; color:#234e52; font-size:16px;">
+          ＋ 新しいボタンを追加
+        </button>
+      </div>
+
+      <div class="modal-footer">
+        <button class="action-btn btn-secondary" onclick="closeSettings()">キャンセル</button>
+        <button class="action-btn btn-primary" onclick="saveSettings()">保存して反映</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- カスタムダイアログ -->
+  <div id="dialog-overlay" class="modal-overlay">
+    <div class="dialog-box">
+      <div class="dialog-msg" id="dialog-msg">メッセージ</div>
+      <div id="dialog-buttons" style="display:flex; justify-content:center; gap:12px;">
+        <button class="action-btn btn-primary" onclick="closeDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/render.js?v=2"></script>
+<script src="js/pin.js?v=2"></script>
+<script src="js/events.js?v=2"></script>
+<script src="js/dialog.js?v=2"></script>
+<script src="js/tasks.js?v=1"></script>
+<script src="js/settings.js?v=2"></script>
+<script src="js/app.js?v=2"></script>
+</body>
+</html>
